@@ -3,16 +3,27 @@ import React, {useEffect} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import Cache from '../../utils/cache';
 import icon_main_logo from '../../assets/images/icon_main_logo.png';
 
 const Welcome = () => {
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigate = useNavigation<StackNavigationProp<any>>();
 
   useEffect(() => {
-    setTimeout(() => {
-      navigation.replace('Login');
+    setTimeout(async () => {
+      getUserInfo()
     }, 0);
   });
+
+  // 判断是否登录过
+  const getUserInfo = async () => {
+    const res = await Cache.getCache('userInfo')
+    if (Object.keys(res).length) {
+      navigate.push('Tabbar');
+    } else {
+      navigate.push('Login');
+    }
+  }
 
   return (
     <View style={styles.root}>

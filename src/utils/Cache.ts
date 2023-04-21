@@ -6,6 +6,7 @@ class StorageCache {
   }
   async getCache(key: string) {
     const res = await AsyncStorage.getItem(key);
+    
     if (res) {
       return JSON.parse(res);
     } else {

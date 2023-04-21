@@ -8,7 +8,12 @@ import {
   TextInput,
 } from 'react-native';
 import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
+import {useAppDispatch, useAppSelector, shallowEqualApp} from '../../store';
+import {fetchUserInfo} from '../../store/modules/userInfo';
+import {formatPhone, replaceBlank} from '../../utils/format';
 import icon_main_logo from '../../assets/images/icon_main_logo.png';
 import icon_unselected from '../../assets/images/icon_unselected.png';
 import icon_selected from '../../assets/images/icon_selected.png';
@@ -26,6 +31,20 @@ const Login = () => {
   const [selected, setSelected] = useState(false);
   const [openEye, setOpenEye] = useState(true);
   const [loginWay, setLoginWay] = useState<'quick' | 'other'>('quick');
+
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const isPass = Boolean(phone && password && selected);
+
+  const navigate = useNavigation<StackNavigationProp<any>>();
+  const dispatch = useAppDispatch();
+
+  const {userInfo} = useAppSelector(
+    state => ({
+      userInfo: state.userInfo.userInfo,
+    }),
+    shallowEqualApp,
+  );
 
   // 协议链接
   const toLink = () => {
@@ -150,7 +169,10 @@ const Login = () => {
 
         <TouchableOpacity
           style={quickLoginStyle.otherWay}
-          onPress={() => setLoginWay('other')}>
+          onPress={() => {
+            setSelected(false);
+            setLoginWay('other');
+          }}>
           <Text style={quickLoginStyle.otherWayTxt}>其他登录方式</Text>
           <Image style={quickLoginStyle.arrow} source={icon_arrow} />
         </TouchableOpacity>
@@ -286,7 +308,10 @@ const Login = () => {
       <View style={otherLoginStyles.root}>
         <TouchableOpacity
           style={otherLoginStyles.closeButton}
-          onPress={() => setLoginWay('quick')}>
+          onPress={() => {
+            setSelected(false);
+            setLoginWay('quick');
+          }}>
           <Image style={otherLoginStyles.IconClose} source={icon_close_modal} />
         </TouchableOpacity>
 
@@ -299,6 +324,12 @@ const Login = () => {
           <Image style={otherLoginStyles.triangle} source={icon_triangle} />
           <TextInput
             style={otherLoginStyles.phoneInput}
+            value={phone}
+            maxLength={13}
+            keyboardType="number-pad"
+            onChangeText={(text: string) => {
+              setPhone(formatPhone(text));
+            }}
             placeholder="请输入手机号码"
             placeholderTextColor={'#9e9e9e'}
           />
@@ -308,6 +339,11 @@ const Login = () => {
           <TextInput
             secureTextEntry={!openEye}
             style={otherLoginStyles.phoneInput}
+            value={password}
+            maxLength={6}
+            onChangeText={(text: string) => {
+              setPassword(text);
+            }}
             placeholder="输入密码"
             placeholderTextColor={'#9e9e9e'}
           />
@@ -320,21 +356,42 @@ const Login = () => {
         </View>
 
         <View style={otherLoginStyles.codeLogin}>
-          <View style={otherLoginStyles.rowLayout}>
+          <TouchableOpacity style={otherLoginStyles.rowLayout}>
             <Image
               style={otherLoginStyles.IconExchange}
               source={icon_exchange}
             />
             <Text style={otherLoginStyles.codeTxt}>验证码登录</Text>
-          </View>
-          <View>
+          </TouchableOpacity>
+          <TouchableOpacity>
             <Text style={otherLoginStyles.codeTxt}>忘记密码？</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
           activeOpacity={0.7}
-          style={otherLoginStyles.loginLayout}>
+          style={[
+            otherLoginStyles.loginLayout,
+            {backgroundColor: isPass ? '#3aabf4' : '#dddddd'},
+          ]}
+          onPress={async () => {
+            if (!isPass) {
+              return;
+            }
+
+            dispatch(
+              fetchUserInfo({
+                phone: replaceBlank(phone),
+                password,
+                cb: (res: any) => {                  
+                  if (Object.keys(res).length) {
+                    navigate.push('Tabbar');
+                  }
+                },
+              }),
+            );
+            
+          }}>
           <Text style={otherLoginStyles.login}>登录</Text>
         </TouchableOpacity>
 
