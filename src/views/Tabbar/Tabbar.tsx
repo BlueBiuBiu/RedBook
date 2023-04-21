@@ -52,6 +52,7 @@ const MyTabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
           return (
             <TouchableOpacity
               activeOpacity={0.7}
+              style={styles.item}
               key={route.key}
               onPress={publishClick}>
               <Image style={styles.IconPublish} source={icon_tab_publish} />
