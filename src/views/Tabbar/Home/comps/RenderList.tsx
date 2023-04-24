@@ -5,9 +5,12 @@ import {
   FlatList,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 
+import { useNavigation } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import FlowList from '../../../../components/flowlist/FlowList';
 import RenderCategory from './RenderCategory';
 import {getHomeList} from '../../../../service/modules/home';
@@ -23,10 +26,13 @@ const RenderList = () => {
   const [homeList, setHomeList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigation<StackNavigationProp<any>>()
+
   useEffect(() => {
     loadData();
   }, []);
 
+  // 刷新数据
   const loadData = async () => {
     const params = {
       page: 1,
@@ -42,6 +48,7 @@ const RenderList = () => {
     setHomeList(res);
   };
 
+  // 加载更多
   const loadMore = async () => {
     if (noData) {
       return;
@@ -106,7 +113,9 @@ const RenderList = () => {
     });
 
     return (
-      <View style={itemStyles.item}>
+      <TouchableOpacity style={itemStyles.item} onPress={() => {
+        navigate.push("Detail",{id: item.id})
+      }}>
         <ResizeImage width={(SCREEN_WIDTH - 18) / 2} url={item.image} />
         <Text style={itemStyles.title}>{item.title}</Text>
         <View style={itemStyles.box}>
@@ -118,7 +127,7 @@ const RenderList = () => {
           />
           <Text style={itemStyles.unit}>{item.favoriteCount}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

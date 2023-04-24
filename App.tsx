@@ -11,6 +11,7 @@ import {enableScreens} from 'react-native-screens';
 import Tabbar from './src/views/Tabbar/Tabbar';
 import Welcome from './src/views/Login/Welcome';
 import Login from './src/views/Login/Login';
+import RenderDetail from './src/views/Tabbar/Home/comps/RenderDetail';
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -39,6 +40,11 @@ function App(): JSX.Element {
             <Stack.Screen
               name="Tabbar"
               component={Tabbar}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Detail"
+              component={RenderDetail}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

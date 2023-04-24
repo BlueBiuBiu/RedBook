@@ -87,3 +87,13 @@ export function getHomeList({ page, size = 8 }: pagination) {
     }
   })
 }
+
+// 详情
+export function getDetailById(id: number | string) {
+  return Request.get<any>({
+    url: "/article/articleDetail",
+    params: {
+      id
+    }
+  })
+}

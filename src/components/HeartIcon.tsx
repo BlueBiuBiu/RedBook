@@ -12,7 +12,7 @@ import icon_heart from '../assets/images/icon_heart.png';
 import icon_heart_empty from '../assets/images/icon_heart_empty.png';
 
 interface IProps {
-  style: Object;
+  style?: Object;
   isFavorite: boolean;
   size?: number;
 }
@@ -53,7 +53,7 @@ const HeartIcon = (props: IProps) => {
   return (
     <TouchableOpacity onPress={heartClick}>
       <Image
-        style={style}
+        style={[style,{ width: size, height: size }]}
         source={showState ? icon_heart : icon_heart_empty}
       />
       <Animated.View
