@@ -10,7 +10,7 @@ class StorageCache {
     if (res) {
       return JSON.parse(res);
     } else {
-      return null;
+      return [];
     }
   }
   deleteCache(key: string) {

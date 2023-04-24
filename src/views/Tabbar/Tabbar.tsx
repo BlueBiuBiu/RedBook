@@ -33,9 +33,9 @@ const MyTabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
       (res: ImagePickerResponse) => {
         const {assets} = res;
         console.log(assets);
-        if(!assets) return
+        if (!assets) return;
         const {uri, width, height, fileName, fileSize, type} = assets[0];
-        
+
         console.log(`uri=${uri}, width=${width}, height=${height}`);
         console.log(`fileName=${fileName}, fileSize=${fileSize}, type=${type}`);
       },
@@ -81,20 +81,32 @@ const MyTabBar = ({state, descriptors, navigation}: BottomTabBarProps) => {
 const Tabbar = () => {
   return (
     <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen name="Home" component={Home} options={{title: '首页'}} />
-      <Tab.Screen name="Shop" component={Shop} options={{title: '购物'}} />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{title: '首页', headerShown: false}}
+      />
+      <Tab.Screen
+        name="Shop"
+        component={Shop}
+        options={{title: '购物', headerShown: false}}
+      />
       <Tab.Screen
         name="Publish"
         component={Publish}
-        options={{title: '发布'}}
+        options={{title: '发布', headerShown: false}}
       />
 
       <Tab.Screen
         name="Message"
         component={Message}
-        options={{title: '消息'}}
+        options={{title: '消息', headerShown: false}}
       />
-      <Tab.Screen name="Mine" component={Mine} options={{title: '我'}} />
+      <Tab.Screen
+        name="Mine"
+        component={Mine}
+        options={{title: '我', headerShown: false}}
+      />
     </Tab.Navigator>
   );
 };
@@ -105,6 +117,7 @@ const styles = StyleSheet.create({
   tabBarLayout: {
     width: '100%',
     height: 52,
+    backgroundColor: '#fff',
     flexDirection: 'row',
     alignItems: 'center',
   },
