@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import Cache from '../../utils/cache';
+import Cache from '../../utils/Cache';
 import icon_main_logo from '../../assets/images/icon_main_logo.png';
 
 const Welcome = () => {

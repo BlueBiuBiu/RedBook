@@ -16,7 +16,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import Cache from '../../../../utils/cache';
+import Cache from '../../../../utils/Cache';
 import icon_arrow from '../../../../assets/images/icon_arrow.png';
 import icon_delete from '../../../../assets/images/icon_delete.png';
 
@@ -45,14 +45,14 @@ const RenderCategoryModal = forwardRef((props: IProps, ref) => {
   };
 
   const hide = () => {
-    refresh()
+    refresh();
     setVisible(false);
   };
 
   const removeTab = (tab: Category) => {
     // 默认的不可移除
-    if(tab.default) {
-      return
+    if (tab.default) {
+      return;
     }
 
     LayoutAnimation.easeInEaseOut();
@@ -134,7 +134,9 @@ const RenderCategoryModal = forwardRef((props: IProps, ref) => {
                   }
                   removeTab(item);
                 }}>
-                <Text style={item.default ? styles.defaultTab :styles.tab}>{item.name}</Text>
+                <Text style={item.default ? styles.defaultTab : styles.tab}>
+                  {item.name}
+                </Text>
                 {isEdit && !item.default && (
                   <Image style={styles.IconDelect} source={icon_delete} />
                 )}
