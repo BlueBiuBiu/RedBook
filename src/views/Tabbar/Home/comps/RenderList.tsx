@@ -9,14 +9,13 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 
-import { useNavigation } from "@react-navigation/native"
-import { StackNavigationProp } from "@react-navigation/stack"
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import FlowList from '../../../../components/flowlist/FlowList';
 import RenderCategory from './RenderCategory';
 import {getHomeList} from '../../../../service/modules/home';
 import ResizeImage from '../../../../components/ResizeImage';
 import HeartIcon from '../../../../components/HeartIcon';
-
 
 const {width: SCREEN_WIDTH} = Dimensions.get('window');
 
@@ -26,7 +25,7 @@ const RenderList = () => {
   const [homeList, setHomeList] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigation<StackNavigationProp<any>>()
+  const navigate = useNavigation<StackNavigationProp<any>>();
 
   useEffect(() => {
     loadData();
@@ -44,7 +43,6 @@ const RenderList = () => {
     setIsLoading(false);
     setNoData(false);
     setPage(1);
-
     setHomeList(res);
   };
 
@@ -113,18 +111,17 @@ const RenderList = () => {
     });
 
     return (
-      <TouchableOpacity style={itemStyles.item} onPress={() => {
-        navigate.push("Detail",{id: item.id})
-      }}>
+      <TouchableOpacity
+        style={itemStyles.item}
+        onPress={() => {
+          navigate.push('Detail', {id: item.id});
+        }}>
         <ResizeImage width={(SCREEN_WIDTH - 18) / 2} url={item.image} />
         <Text style={itemStyles.title}>{item.title}</Text>
         <View style={itemStyles.box}>
           <Image style={itemStyles.avatar} source={{uri: item.avatarUrl}} />
           <Text style={itemStyles.userName}>{item.userName}</Text>
-          <HeartIcon
-            style={itemStyles.fav}
-            isFavorite={item.isFavorite}
-          />
+          <HeartIcon style={itemStyles.fav} isFavorite={item.isFavorite} />
           <Text style={itemStyles.unit}>{item.favoriteCount}</Text>
         </View>
       </TouchableOpacity>
