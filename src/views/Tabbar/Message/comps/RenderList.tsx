@@ -15,6 +15,7 @@ const RenderList = () => {
 
   useEffect(() => {
     loadData();
+    setNoData(true)
   }, []);
 
   // 刷新数据
@@ -25,7 +26,7 @@ const RenderList = () => {
     };
 
     setIsLoading(true);
-    const res = await getMessageList(params);    
+    const res = await getMessageList(params);        
     setIsLoading(false);
     setNoData(false);
     setPage(1);
@@ -34,7 +35,7 @@ const RenderList = () => {
   };
 
   // 加载更多
-  const loadMore = async () => {
+  const loadMore = async () => {    
     if (noData) {
       return;
     }
@@ -189,6 +190,7 @@ const RenderList = () => {
       renderItem={RenderItem}
       refreshing={isLoading}
       onRefresh={loadData}
+      onEndReachedThreshold={0.1}
       onEndReached={loadMore}
       keyExtractor={(item,index) => `${item}-${index}`}
       ListHeaderComponent={RenderHeader}

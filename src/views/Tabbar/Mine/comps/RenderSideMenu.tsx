@@ -9,11 +9,13 @@ import {
   View,
 } from 'react-native';
 import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp } from '@react-navigation/stack'
 
+import Cache from '../../../../utils/Cache';
 import icon_setting from '../../../../assets/images/icon_setting.png';
 import icon_service from '../../../../assets/images/icon_service.png';
 import icon_scan from '../../../../assets/images/icon_scan.png';
-
 import icon_fid_user from '../../../../assets/images/icon_find_user.png';
 import icon_draft from '../../../../assets/images/icon_draft.png';
 import icon_create_center from '../../../../assets/images/icon_create_center.png';
@@ -48,7 +50,7 @@ const MENUS = [
   ],
   [
     {icon: icon_community, name: '社区公约'},
-    {icon: icon_exit, name: '退出登陆'},
+    {icon: icon_exit, name: '退出登录'},
   ],
 ];
 
@@ -62,8 +64,9 @@ const {width: SCREEN_WIDTH} = Dimensions.get('screen');
 const contentWidth = SCREEN_WIDTH * 0.75;
 
 const RenderSideMenu = forwardRef((props: any, ref) => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigation<StackNavigationProp<any>>();
 
   const show = () => {
     setVisible(true);
@@ -79,6 +82,17 @@ const RenderSideMenu = forwardRef((props: any, ref) => {
     setTimeout(() => {
       setVisible(false);
     }, 300);
+  };
+
+  const menuClick = async (iten: any) => {    
+    if (iten.name === '退出登录') {
+      hide();
+      await Cache.deleteCache('userInfo');
+      navigate.reset({
+        index: 0,
+        routes: [{name: 'Login'}]
+      });
+    }
   };
 
   useImperativeHandle(ref, () => {
@@ -145,7 +159,9 @@ const RenderSideMenu = forwardRef((props: any, ref) => {
             <View style={contentStyle.item}>
               {item.map((iten: ISideMenuItem) => {
                 return (
-                  <TouchableOpacity style={contentStyle.box}>
+                  <TouchableOpacity
+                    style={contentStyle.box}
+                    onPress={() => menuClick(iten)}>
                     <Image style={contentStyle.img} source={iten.icon} />
                     <Text style={contentStyle.txt}>{iten.name}</Text>
                   </TouchableOpacity>
