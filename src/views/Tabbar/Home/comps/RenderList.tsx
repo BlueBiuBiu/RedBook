@@ -138,7 +138,7 @@ const RenderList = () => {
 
   return (
     <View style={styles.root}>
-      <FlowList
+      <FlatList
         style={styles.flatList}
         data={homeList}
         horizontal={false}
